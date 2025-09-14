@@ -9,7 +9,8 @@ const nextConfig = {
   assetPrefix: process.env.NODE_ENV === 'production' ? '/nagara-giki' : '',
   basePath: process.env.NODE_ENV === 'production' ? '/nagara-giki' : '',
   env: {
-    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000',
+    NEXT_PUBLIC_API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000',
+    NEXT_PUBLIC_FRONTEND_URL: process.env.NEXT_PUBLIC_FRONTEND_URL || 'http://localhost:3000',
   },
 }
 
