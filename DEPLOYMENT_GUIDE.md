@@ -9,8 +9,8 @@
 GitHubリポジトリの「Settings」→「Secrets and variables」→「Actions」で以下を設定：
 
 ```
-NEXT_PUBLIC_API_BASE_URL=https://your-api-domain.com
-NEXT_PUBLIC_FRONTEND_URL=https://your-username.github.io/nagara-giki
+NEXT_PUBLIC_API_BASE_URL=https://nagara-giki.app
+NEXT_PUBLIC_FRONTEND_URL=https://shigekikozawa.github.io/nagara-giki
 ```
 
 ### 2. GitHub Pagesの有効化

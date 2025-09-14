@@ -94,10 +94,11 @@ Pythonの出力バッファリングを無効化（本番環境推奨）
 3. 「OAuth 2.0 Client IDs」を作成
 4. 承認済みリダイレクトURIに追加：
    - 開発環境: `http://localhost:9527/auth/callback`
-   - 本番環境: `https://your-railway-domain.up.railway.app/auth/callback`
+   - 本番環境: `https://nagara-giki.app/auth/callback`
 5. 承認済みJavaScript生成元に追加：
    - 開発環境: `http://localhost:3000`
    - 本番環境: `https://shigekikozawa.github.io`
+   - APIドメイン: `https://nagara-giki.app`
 
 ## デプロイプラットフォーム別設定
 
