@@ -6,12 +6,20 @@ import { usePlayerStore } from '@/stores/player-store'
 
 function AuthSuccessContent() {
   const searchParams = useSearchParams()
-  const { setAuthToken } = usePlayerStore()
+  const { setAuthToken, clearAllData } = usePlayerStore()
 
   useEffect(() => {
     const token = searchParams.get('token')
     
     if (token) {
+      // 既存のプレイリストとデータを全てクリア
+      clearAllData()
+      
+      // ブラウザコンソールもクリア
+      if (typeof window !== 'undefined' && window.console && window.console.clear) {
+        window.console.clear()
+      }
+      
       // トークンをストアとLocalStorageに保存
       setAuthToken(token)
       

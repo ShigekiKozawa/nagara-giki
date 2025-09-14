@@ -141,10 +141,17 @@ export const usePlayerStore = create<PlayerStore>()(
           favorites: [],
           skippedTracks: [],
           playHistory: [],
-          authToken: undefined
+          authToken: undefined,
+          isSyncing: false,
+          syncingPlaylistId: undefined
         })
         
+        // 全てのローカルストレージをクリア
         localStorage.removeItem('player-storage')
+        localStorage.removeItem('gdap-auth-token')
+        
+        // セッションストレージもクリア
+        sessionStorage.clear()
       },
 
       // プレイリスト管理
@@ -254,6 +261,10 @@ export const usePlayerStore = create<PlayerStore>()(
           
           if (!response.ok) {
             if (response.status === 401) {
+              // 全てのデータをクリア（プレイリストも含む）
+              const { clearAllData } = get()
+              clearAllData()
+              
               window.location.href = getAuthUrl('login')
               return { hasAudio: false, fileCount: 0, error: '認証が期限切れです' }
             }
@@ -302,6 +313,11 @@ export const usePlayerStore = create<PlayerStore>()(
             const errorText = await response.text()
             
             if (response.status === 401) {
+              // 全てのデータをクリア（プレイリストも含む）
+              const { clearAllData } = get()
+              clearAllData()
+              
+              // 認証ページにリダイレクト
               window.location.href = getAuthUrl('login')
               return
             }
