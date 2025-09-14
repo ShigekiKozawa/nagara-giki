@@ -29,6 +29,19 @@ export function InitialSetup({ onComplete }: InitialSetupProps) {
     window.location.href = getAuthUrl('login')
   }
 
+  const extractFolderId = (input: string): string => {
+    const trimmed = input.trim()
+    
+    // Google DriveのURL形式をチェック
+    const urlMatch = trimmed.match(/\/folders\/([a-zA-Z0-9-_]+)/)
+    if (urlMatch) {
+      return urlMatch[1]
+    }
+    
+    // 直接IDが入力された場合
+    return trimmed
+  }
+
   const validateFolder = async () => {
     if (!folderId.trim()) return
 
@@ -47,13 +60,16 @@ export function InitialSetup({ onComplete }: InitialSetupProps) {
         return
       }
 
+      const actualFolderId = extractFolderId(folderId)
+
       
-      const response = await fetch(getApiUrl(`/api/validate-folder/${folderId}?token=${authToken}`))
+      const response = await fetch(getApiUrl(`/api/validate-folder/${actualFolderId}?token=${authToken}`))
       const result = await response.json()
       
       setValidationResult(result)
       
       if (result.is_valid || result.isValid) {
+        onComplete(playlistName, actualFolderId, authToken)
       }
     } catch (error) {
       setValidationResult({ 
@@ -133,18 +149,18 @@ export function InitialSetup({ onComplete }: InitialSetupProps) {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Google Drive フォルダID
+              Google Drive フォルダID または URL
             </label>
             <input
               type="text"
               value={folderId}
               onChange={(e) => setFolderId(e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="例: 1ABC123def456GHI789jkl"
+              placeholder="例: 1ABC123def456GHI789jkl または https://drive.google.com/drive/folders/1ABC123def456GHI789jkl"
               required
             />
             <p className="text-xs text-gray-500 mt-1">
-              Google DriveのフォルダURLから取得できます
+              フォルダIDまたはGoogle DriveのフォルダURLを入力してください
             </p>
           </div>
 

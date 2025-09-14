@@ -12,12 +12,18 @@ function AuthSuccessContent() {
     const token = searchParams.get('token')
     
     if (token) {
-      
       // トークンをストアとLocalStorageに保存
       setAuthToken(token)
       
+      // URLからトークンを即座に削除
+      const url = new URL(window.location.href)
+      url.searchParams.delete('token')
+      window.history.replaceState({}, '', url.toString())
+      
       // メインページにリダイレクト
-      window.location.href = '/'
+      setTimeout(() => {
+        window.location.href = '/'
+      }, 1000)
     } else {
       // エラーの場合もメインページに戻る
       setTimeout(() => {

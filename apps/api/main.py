@@ -114,10 +114,13 @@ async def auth_callback(request: Request):
         flow.fetch_token(code=code)
         credentials = flow.credentials
         
-        token_key = credentials.token[:16]
+        # より安全なトークン生成
+        import secrets
+        token_key = secrets.token_urlsafe(32)
         user_credentials[token_key] = credentials
         
         auth_urls = config.get_auth_urls()
+        # トークンをセッションストレージに保存するためのスクリプトを含むページにリダイレクト
         return RedirectResponse(url=f"{auth_urls['success_url']}?token={token_key}")
     except Exception as e:
         logger.error(f"OAuth error: {str(e)}")
