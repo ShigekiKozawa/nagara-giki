@@ -120,8 +120,10 @@ async def auth_callback(request: Request):
         user_credentials[token_key] = credentials
         
         auth_urls = config.get_auth_urls()
+        redirect_url = f"{auth_urls['success_url']}?token={token_key}"
+        logger.info(f"Redirecting to: {redirect_url}")
         # トークンをセッションストレージに保存するためのスクリプトを含むページにリダイレクト
-        return RedirectResponse(url=f"{auth_urls['success_url']}?token={token_key}")
+        return RedirectResponse(url=redirect_url)
     except Exception as e:
         logger.error(f"OAuth error: {str(e)}")
         auth_urls = config.get_auth_urls()
