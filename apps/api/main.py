@@ -349,4 +349,5 @@ if __name__ == "__main__":
     if not config.validate_config():
         logger.error("Configuration validation failed. Please check your environment variables.")
         exit(1)
-    uvicorn.run("main:app", host=config.API_HOST, port=config.API_PORT, reload=config.IS_DEVELOPMENT)
+    port = int(os.getenv("PORT", config.API_PORT))
+    uvicorn.run("main:app", host=config.API_HOST, port=port, reload=config.IS_DEVELOPMENT)
