@@ -37,6 +37,10 @@ REDIRECT_URI = f"http://localhost:{config.API_PORT}/auth/callback"
 
 user_credentials = {}
 
+@app.get("/")
+async def root():
+    return {"message": "Google Drive Audio Player API", "status": "running", "version": "2.0.0"}
+
 class AudioFile(BaseModel):
     id: str
     name: str
