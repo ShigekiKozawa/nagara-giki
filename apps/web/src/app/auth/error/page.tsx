@@ -3,8 +3,9 @@
 import { useSearchParams } from 'next/navigation'
 import { AlertCircle, Home } from 'lucide-react'
 import Link from 'next/link'
+import { Suspense } from 'react'
 
-export default function AuthError() {
+function AuthErrorContent() {
   const searchParams = useSearchParams()
   const error = searchParams.get('error')
 
@@ -46,5 +47,17 @@ export default function AuthError() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function AuthError() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gradient-to-br from-red-50 to-pink-100 flex items-center justify-center">
+        <div className="text-gray-600">読み込み中...</div>
+      </div>
+    }>
+      <AuthErrorContent />
+    </Suspense>
   )
 } 
