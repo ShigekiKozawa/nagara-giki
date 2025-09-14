@@ -54,6 +54,7 @@ jobs:
       run: |
         cd apps/web
         pnpm build
+        ls -la out/
       env:
         NODE_ENV: production
         NEXT_PUBLIC_API_BASE_URL: ${{ secrets.NEXT_PUBLIC_API_BASE_URL }}
