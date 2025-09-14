@@ -33,7 +33,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-REDIRECT_URI = f"http://localhost:{config.API_PORT}/auth/callback"
+REDIRECT_URI = f"https://gdrive-audio-playerapi-production.up.railway.app/auth/callback"
 
 user_credentials = {}
 
