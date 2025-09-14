@@ -1,8 +1,9 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { Plus, Music, MoreHorizontal, Edit3, Trash2, ChevronRight, Loader2, RotateCcw } from 'lucide-react'
+import { Plus, Music, MoreHorizontal, Edit3, Trash2, ChevronRight, Loader2, RotateCcw, LogIn } from 'lucide-react'
 import { usePlayerStore } from '@/stores/player-store'
+import { getAuthUrl } from '@/config/env'
 import type { Playlist } from '@gdrive-audio-player/types'
 
 interface PlaylistListProps {
@@ -18,7 +19,8 @@ export function PlaylistList({ onSelectPlaylist }: PlaylistListProps) {
     updatePlaylist,
     loadPlaylistFiles,
     isSyncing,
-    syncingPlaylistId
+    syncingPlaylistId,
+    authToken
   } = usePlayerStore()
   
   const [showCreateForm, setShowCreateForm] = useState(false)
@@ -76,7 +78,19 @@ export function PlaylistList({ onSelectPlaylist }: PlaylistListProps) {
     })
   }, [playlists, audioFiles, isSyncing, syncingPlaylistId, loadPlaylistFiles])
 
+  const handleGoogleAuth = () => {
+    const authUrl = getAuthUrl('login')
+    console.log('Auth URL:', authUrl)
+    window.location.href = authUrl
+  }
+
   const handleCreatePlaylist = async () => {
+    // 認証チェック
+    if (!authToken) {
+      setCreationError('プレイリストを作成するにはGoogleアカウントでログインしてください。')
+      return
+    }
+
     if (!newPlaylistName.trim() || !newPlaylistFolderId.trim()) {
       setCreationError('プレイリスト名とフォルダID/URLを入力してください。')
       return
@@ -184,17 +198,29 @@ export function PlaylistList({ onSelectPlaylist }: PlaylistListProps) {
         <div className="p-4">
           <div className="flex items-center justify-between mb-4">
             <h1 className="text-xl font-bold text-gray-900">プレイリスト</h1>
-            <button
-              onClick={() => setShowCreateForm(true)}
-              className="flex items-center space-x-2 bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white px-4 py-2 rounded-full transition-colors"
-            >
-              <Plus className="w-4 h-4" />
-              <span>新規作成</span>
-            </button>
+            <div className="flex items-center space-x-2">
+              {!authToken ? (
+                <button
+                  onClick={handleGoogleAuth}
+                  className="flex items-center space-x-2 bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white px-4 py-2 rounded-full transition-colors"
+                >
+                  <LogIn className="w-4 h-4" />
+                  <span>ログイン</span>
+                </button>
+              ) : (
+                <button
+                  onClick={() => setShowCreateForm(true)}
+                  className="flex items-center space-x-2 bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white px-4 py-2 rounded-full transition-colors"
+                >
+                  <Plus className="w-4 h-4" />
+                  <span>新規作成</span>
+                </button>
+              )}
+            </div>
           </div>
 
-                          {/* プレイリスト作成フォーム */}
-                {showCreateForm && (
+          {/* プレイリスト作成フォーム */}
+          {showCreateForm && authToken && (
                   <div className="space-y-4 p-4 bg-gray-50 rounded-lg">
                     <input
                       type="text"
@@ -295,12 +321,25 @@ export function PlaylistList({ onSelectPlaylist }: PlaylistListProps) {
             <div className="text-center py-12">
               <Music className="w-16 h-16 text-gray-300 mx-auto mb-4" />
               <p className="text-gray-500 mb-4">プレイリストがありません</p>
-              <button
-                onClick={() => setShowCreateForm(true)}
-                className="text-blue-500 hover:text-blue-600 font-medium"
-              >
-                最初のプレイリストを作成
-              </button>
+              {!authToken ? (
+                <div className="space-y-3">
+                  <p className="text-sm text-gray-600">プレイリストを作成するには、まずGoogleアカウントでログインしてください</p>
+                  <button
+                    onClick={handleGoogleAuth}
+                    className="inline-flex items-center space-x-2 bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-full font-medium transition-colors"
+                  >
+                    <LogIn className="w-4 h-4" />
+                    <span>Googleでログイン</span>
+                  </button>
+                </div>
+              ) : (
+                <button
+                  onClick={() => setShowCreateForm(true)}
+                  className="text-blue-500 hover:text-blue-600 font-medium"
+                >
+                  最初のプレイリストを作成
+                </button>
+              )}
             </div>
           ) : (
             playlists.map((playlist) => (

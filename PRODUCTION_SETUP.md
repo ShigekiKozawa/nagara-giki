@@ -71,7 +71,7 @@ GOOGLE_CLIENT_ID=your_google_client_id
 GOOGLE_CLIENT_SECRET=your_google_client_secret
 FRONTEND_URL=https://your-username.github.io/nagara-giki
 API_HOST=0.0.0.0
-API_PORT=8000
+API_PORT=9527
 ENVIRONMENT=production
 CORS_ORIGINS=https://your-username.github.io
 ```

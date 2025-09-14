@@ -10,7 +10,7 @@
 
 ```env
 # API Server Configuration
-NEXT_PUBLIC_API_BASE_URL=http://localhost:8000
+NEXT_PUBLIC_API_BASE_URL=http://localhost:9527
 
 # Frontend Configuration  
 NEXT_PUBLIC_FRONTEND_URL=http://localhost:3000
@@ -32,7 +32,7 @@ FRONTEND_URL=http://localhost:3000
 
 # API Server Configuration
 API_HOST=0.0.0.0
-API_PORT=8000
+API_PORT=9527
 
 # Development/Production Mode
 ENVIRONMENT=development
@@ -49,7 +49,7 @@ CORS_ORIGINS=http://localhost:3000,http://localhost:3001
 4. 「認証情報を作成」→「OAuth 2.0 クライアントID」を選択
 5. アプリケーションの種類：「ウェブアプリケーション」
 6. 承認済みのリダイレクトURIに追加：
-   - `http://localhost:8000/auth/callback` (開発環境)
+   - `http://localhost:9527/auth/callback` (開発環境)
    - 本番環境のURL (本番環境の場合)
 7. クライアントIDとクライアントシークレットをコピー
 8. `.env` ファイルに設定
@@ -69,7 +69,7 @@ GOOGLE_CLIENT_ID=your_actual_google_client_id
 GOOGLE_CLIENT_SECRET=your_actual_google_client_secret
 FRONTEND_URL=https://your-frontend-domain.com
 API_HOST=0.0.0.0
-API_PORT=8000
+API_PORT=9527
 ENVIRONMENT=production
 CORS_ORIGINS=https://your-frontend-domain.com
 ```

@@ -33,7 +33,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-REDIRECT_URI = f"https://gdrive-audio-playerapi-production.up.railway.app/auth/callback"
+REDIRECT_URI = f"http://localhost:9527/auth/callback" if config.IS_DEVELOPMENT else f"https://gdrive-audio-playerapi-production.up.railway.app/auth/callback"
 
 user_credentials = {}
 
@@ -252,7 +252,7 @@ async def get_audio_files(folder_id: str, token: str = Query(...)):
                     "id": file["id"],
                     "name": file["name"],
                     "size": size_str,
-                    "download_url": f"http://localhost:8000/api/stream/{file['id']}?token={token}",
+                    "download_url": f"http://localhost:9527/api/stream/{file['id']}?token={token}",
                     "mime_type": file["mimeType"]
                 })
         
@@ -353,8 +353,8 @@ async def stream_audio(file_id: str, token: str = Query(...), range: str = Heade
 
 if __name__ == "__main__":
     import uvicorn
-    if not config.validate_config():
+    if not config.validate():
         logger.error("Configuration validation failed. Please check your environment variables.")
         exit(1)
     port = int(os.getenv("PORT", config.API_PORT))
-    uvicorn.run("main:app", host=config.API_HOST, port=port, reload=config.IS_DEVELOPMENT)
+    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=config.IS_DEVELOPMENT)

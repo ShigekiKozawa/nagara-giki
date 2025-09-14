@@ -81,8 +81,8 @@ docker-compose up -d
 ## 🌐 アクセス
 
 - **フロントエンド**: http://localhost:3000
-- **バックエンドAPI**: http://localhost:8000
-- **API ドキュメント**: http://localhost:8000/docs
+- **バックエンドAPI**: http://localhost:9527
+- **API ドキュメント**: http://localhost:9527/docs
 
 ## 🎯 主な機能
 
