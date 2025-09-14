@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && npm run copy-pwa",
-    "copy-pwa": "cp public/sw.js out/sw.js && cp public/manifest.json out/manifest.json && cp public/icon.svg out/icon.svg && cp public/favicon.ico out/favicon.ico",
+    "build": "next build",
+    "copy-pwa": "mkdir -p out && cp -f public/sw.js out/ && cp -f public/manifest.json out/ && cp -f public/icon.svg out/ && cp -f public/favicon.ico out/ || true",
     "start": "next start",
     "lint": "next lint",
     "type-check": "tsc --noEmit",

@@ -11,9 +11,16 @@ permissions:
   pages: write
   id-token: write
 
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     
     steps:
     - name: Checkout
@@ -54,6 +61,11 @@ jobs:
       run: |
         cd apps/web
         pnpm build
+        # PWAファイルを手動でコピー
+        cp public/sw.js out/sw.js || echo "sw.js not found"
+        cp public/manifest.json out/manifest.json || echo "manifest.json not found"
+        cp public/icon.svg out/icon.svg || echo "icon.svg not found"
+        cp public/favicon.ico out/favicon.ico || echo "favicon.ico not found"
         ls -la out/
       env:
         NODE_ENV: production

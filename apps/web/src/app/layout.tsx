@@ -36,7 +36,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <Providers>
           {children}
-          <PWAInstaller />
+          {/* <PWAInstaller /> */}
         </Providers>
       </body>
     </html>
