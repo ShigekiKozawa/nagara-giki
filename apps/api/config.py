@@ -5,6 +5,10 @@ class Config:
     # Google OAuth設定
     GOOGLE_CLIENT_ID: str = os.getenv('GOOGLE_CLIENT_ID', '')
     GOOGLE_CLIENT_SECRET: str = os.getenv('GOOGLE_CLIENT_SECRET', '')
+    GOOGLE_DRIVE_SCOPES: List[str] = [
+        'https://www.googleapis.com/auth/drive.readonly',
+        'https://www.googleapis.com/auth/drive.metadata.readonly'
+    ]
     
     # 環境設定
     ENVIRONMENT: str = os.getenv('ENVIRONMENT', 'production')
@@ -24,5 +28,12 @@ class Config:
         if not self.GOOGLE_CLIENT_ID or not self.GOOGLE_CLIENT_SECRET:
             return False
         return True
+    
+    def get_auth_urls(self) -> dict:
+        """認証関連のURLを取得"""
+        return {
+            'success_url': f"{self.FRONTEND_URL}/auth/success",
+            'error_url': f"{self.FRONTEND_URL}/auth/error"
+        }
 
 config = Config() 
