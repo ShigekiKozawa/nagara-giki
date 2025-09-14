@@ -42,8 +42,8 @@ jobs:
 
     - name: Build packages
       run: |
-        cd packages/types && pnpm build
-        cd ../ui && pnpm build
+        pnpm --filter @gdrive-audio-player/types build
+        pnpm --filter @gdrive-audio-player/ui build
 
     - name: Build web app
       run: |
