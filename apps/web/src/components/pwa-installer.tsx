@@ -9,7 +9,8 @@ export function PWAInstaller() {
   useEffect(() => {
     // Service Worker登録
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js')
+      const swPath = process.env.NODE_ENV === 'production' ? '/nagara-giki/sw.js' : '/sw.js'
+      navigator.serviceWorker.register(swPath)
         .then((registration) => {
           console.log('SW registered: ', registration)
         })
