@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 
 import { usePlayerStore } from '@/stores/player-store'
+import { getAuthUrl, getApiUrl } from '@/config/env'
 
 interface InitialSetupProps {
   onComplete: (playlistName: string, folderId: string, authToken?: string) => void
@@ -25,7 +26,7 @@ export function InitialSetup({ onComplete }: InitialSetupProps) {
   }, [setAuthToken])
 
   const handleGoogleAuth = () => {
-    window.location.href = 'http://localhost:8000/auth/login'
+    window.location.href = getAuthUrl('login')
   }
 
   const validateFolder = async () => {
@@ -47,7 +48,7 @@ export function InitialSetup({ onComplete }: InitialSetupProps) {
       }
 
       
-      const response = await fetch(`http://localhost:8000/api/validate-folder/${folderId}?token=${authToken}`)
+      const response = await fetch(getApiUrl(`/api/validate-folder/${folderId}?token=${authToken}`))
       const result = await response.json()
       
       setValidationResult(result)
