@@ -18,9 +18,6 @@ concurrency:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     
     steps:
     - name: Checkout
@@ -60,6 +57,10 @@ jobs:
     - name: Build web app
       run: |
         cd apps/web
+        echo "Environment variables:"
+        echo "NEXT_PUBLIC_API_BASE_URL=$NEXT_PUBLIC_API_BASE_URL"
+        echo "NEXT_PUBLIC_FRONTEND_URL=$NEXT_PUBLIC_FRONTEND_URL"
+        echo "NODE_ENV=$NODE_ENV"
         pnpm build
         # PWAファイルを手動でコピー
         cp public/sw.js out/sw.js || echo "sw.js not found"
@@ -67,6 +68,8 @@ jobs:
         cp public/icon.svg out/icon.svg || echo "icon.svg not found"
         cp public/favicon.ico out/favicon.ico || echo "favicon.ico not found"
         ls -la out/
+        echo "Checking copied files:"
+        ls -la out/*.js out/*.json out/*.svg out/*.ico 2>/dev/null || echo "Some files missing"
       env:
         NODE_ENV: production
         NEXT_PUBLIC_API_BASE_URL: ${{ secrets.NEXT_PUBLIC_API_BASE_URL }}
