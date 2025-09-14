@@ -69,7 +69,8 @@ export const usePlayerStore = create<PlayerStore>()(
         }
 
         try {
-          const response = await fetch(`http://localhost:8000/api/validate-folder/${folderId}?token=${authToken}`)
+          const { getApiUrl } = await import('@/config/env')
+          const response = await fetch(getApiUrl(`/api/validate-folder/${folderId}?token=${authToken}`))
           if (!response.ok) {
             throw new Error(`API Error: ${response.status}`)
           }
@@ -248,11 +249,12 @@ export const usePlayerStore = create<PlayerStore>()(
         }
 
         try {
-          const response = await fetch(`http://localhost:8000/api/audio-files/${folderId}?token=${state.authToken}`)
+          const { getApiUrl, getAuthUrl } = await import('@/config/env')
+          const response = await fetch(getApiUrl(`/api/audio-files/${folderId}?token=${state.authToken}`))
           
           if (!response.ok) {
             if (response.status === 401) {
-              window.location.href = 'http://localhost:8000/auth/login'
+              window.location.href = getAuthUrl('login')
               return { hasAudio: false, fileCount: 0, error: '認証が期限切れです' }
             }
             
@@ -284,7 +286,8 @@ export const usePlayerStore = create<PlayerStore>()(
           return
         }
         if (!state.authToken) {
-          window.location.href = 'http://localhost:8000/auth/login'
+          const { getAuthUrl } = await import('@/config/env')
+          window.location.href = getAuthUrl('login')
           return
         }
 
@@ -292,13 +295,14 @@ export const usePlayerStore = create<PlayerStore>()(
         set({ isSyncing: true, syncingPlaylistId: playlistId })
 
         try {
-          const response = await fetch(`http://localhost:8000/api/audio-files/${playlist.folderId}?token=${state.authToken}`)
+          const { getApiUrl, getAuthUrl } = await import('@/config/env')
+          const response = await fetch(getApiUrl(`/api/audio-files/${playlist.folderId}?token=${state.authToken}`))
           
           if (!response.ok) {
             const errorText = await response.text()
             
             if (response.status === 401) {
-              window.location.href = 'http://localhost:8000/auth/login'
+              window.location.href = getAuthUrl('login')
               return
             }
             
@@ -311,7 +315,7 @@ export const usePlayerStore = create<PlayerStore>()(
             id: file.id,
             name: file.name,
             size: file.size,
-            downloadUrl: `http://localhost:8000/api/stream/${file.id}?token=${state.authToken}`,
+            downloadUrl: getApiUrl(`/api/stream/${file.id}?token=${state.authToken}`),
             mimeType: file.mime_type,
             playlistId
           }))
