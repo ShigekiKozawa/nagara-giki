@@ -14,7 +14,7 @@ class Config:
     API_PORT: int = int(os.getenv('PORT', '9527'))
     
     # CORS設定
-    CORS_ORIGINS: List[str] = os.getenv('CORS_ORIGINS', 'https://shigekikozawa.github.io,http://localhost:3000,http://localhost:3001').split(',')
+    CORS_ORIGINS: List[str] = os.getenv('CORS_ORIGINS', 'https://shigekikozawa.github.io,https://nagara-giki.app,https://gdrive-audio-playerapi-production.up.railway.app').split(',')
     
     # フロントエンド設定
     FRONTEND_URL: str = os.getenv('FRONTEND_URL', 'https://shigekikozawa.github.io/nagara-giki')

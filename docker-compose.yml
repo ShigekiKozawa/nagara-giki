@@ -12,7 +12,7 @@ services:
       - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
       - ENVIRONMENT=development
       - PORT=9527
-      - CORS_ORIGINS=http://localhost:3000,http://localhost:3001,https://shigekikozawa.github.io
+      - CORS_ORIGINS=https://shigekikozawa.github.io,https://nagara-giki.app,https://gdrive-audio-playerapi-production.up.railway.app
     volumes:
       - ./apps/api:/app
     command: uvicorn main:app --reload --host 0.0.0.0 --port 9527
